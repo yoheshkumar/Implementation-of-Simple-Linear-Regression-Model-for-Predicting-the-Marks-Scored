@@ -101,10 +101,29 @@ print("For population = 70,000, we predict a profit of $"+str(round(predict2,0))
 ```
 
 ## Output:
-![simple linear regression model for predicting the marks scored](sam.png)
+
 
 ### PROFIT PREDICTION
-![output]()
+![output](ml%201.png)
+
+### COST FUNCTION
+![output](ml%202.png)
+
+### GRADIENT DESCENT
+![output](ml%203.png)
+
+### COST FUNCTION USING GRADIENT DESCENT
+![output](ml%204.png)
+
+### GRAPH WITH BEST FIT LINE (PROFIT PREDICTION)
+![output](ml%205.png)
+
+### PROFIT PREDICTION FOR A POPULATION OF 35,000
+![output](ml%206.png)
+
+### PROFIT PREDICTION FOR A POPULATION OF 70,000
+![output](ml%208.png)
+
 
 
 ## Result:
