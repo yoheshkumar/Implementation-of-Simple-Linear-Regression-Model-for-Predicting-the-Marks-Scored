@@ -9,120 +9,107 @@ To write a program to predict the marks scored by a student using the simple lin
 
 ## Algorithm
 
-  1.  Import pandas, numpy and mathplotlib.pyplot
-  2. Trace the best fit line and calculate the cost function
-  3.  Calculate the gradient descent and plot the graph for it
-  4.  Predict the profit for two population sizes.
+ 
+  1. Import pandas, numpy and sklearn
+  2. Calculate the values for the training data set
+  3. Calculate the values for the test data set
+  4. Plot the graph for both the data sets and calculate for MAE, MSE and RMSE
+
  
 
 ## Program:
 ```
 /*
-Program to implement the linear regression using gradient descent.
-Developed by: YOHESH KUMAR R.M.
-RegisterNumber: 212222240118
+Program to implement the simple linear regression model for predicting the marks scored.
+Developed by: Yamunaasri
+RegisterNumber:  212222240117
 */
 ```
 ```
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+df=pd.read_csv('/student_scores.csv')
+#Displying the contents in datafile
+df.head()
 
-data=pd.read_csv("/ex1.txt",header=None)
+df.tail()
 
-plt.scatter(data[0],data[1])
-plt.xticks(np.arange(5,30,step=5))
-plt.yticks(np.arange(-5,30,step=5))
-plt.xlabel("Population of City(10,000s)")
-plt.ylabel("Profit ($10,000)")
-plt.title("Profit Prediction")
+#Segregating data to variables
+X=df.iloc[:,:-1].values
+X
 
-def computeCost(X,y,theta):
-  """
-  Take in a numpy array X, y , theta and generate the cost fuction in a linear regression model
-  """
-  m=len(y)
-  h=X.dot(theta)  # length of training data
-  square_err=(h-y)**2 
+Y=df.iloc[:,-1].values
+Y
 
-  return 1/(2*m) * np.sum(square_err)  
-  
-  data_n=data.values
-m=data_n[:,0].size
-X=np.append(np.ones((m,1)),data_n[:,0].reshape(m,1),axis=1)
-y=data_n[:,1].reshape(m,1)
-theta=np.zeros((2,1))
+from sklearn.model_selection import train_test_split
+X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=1/3,random_state=0)
 
-computeCost(X,y,theta)   # function call
+from sklearn.linear_model import LinearRegression
+regressor=LinearRegression()
+regressor.fit(X_train,Y_train)
+Y_pred=regressor.predict(X_test)
 
-def gradientDescent(X,y,theta,alpha,num_iters):
-  """
-  """
-  m=len(y)
-  J_history=[]
+#displaying the predicted values
+Y_pred
 
-  for i in range(num_iters):
-    predictions=X.dot(theta)
-    error=np.dot(X.transpose(),(predictions - y))
-    descent=alpha * 1/m * error
-    theta-=descent
-    J_history.append(computeCost(X,y,theta))
+#displaying the actual values
+Y_test
 
-  return theta, J_history
-  
-theta,J_history = gradientDescent(X,y,theta,0.01,1500)
-print("h(x) ="+str(round(theta[0,0],2))+" + "+str(round(theta[1,0],2))+"x1")
+#graph plot for training data
+plt.scatter(X_train,Y_train,color="orange")
+plt.plot(X_train,regressor.predict(X_train),color="green")
+plt.title("Hours vs Scores(Training Set)")
+plt.xlabel("Hours")
+plt.ylabel("Scores")
+plt.show()
 
-plt.plot(J_history)
-plt.xlabel("Iternations")
-plt.ylabel("$J(\Theta)$")
-plt.title("Cost function using Gradient Descent")
+#graph plot for test data
+plt.scatter(X_test,Y_test,color="blue")
+plt.plot(X_test,regressor.predict(X_test),color="black")
+plt.title("Hours vs Scores(Test Set)")
+plt.xlabel("Hours")
+plt.ylabel("Scores")
+plt.show()
 
-plt.scatter(data[0],data[1])
-x_value=[x for x in range(25)]
-y_value=[y*theta[1]+theta[0] for y in x_value]
-plt.plot(x_value,y_value,color="r")
-plt.xticks(np.arange(5,30,step=5))
-plt.yticks(np.arange(-5,30,step=5))
-plt.xlabel("Polpulation of City (10,000s)")
-plt.ylabel("Profit (10,000s)")
-plt.title("Profit Prediction")
-
-def predict(x,theta):
-  predictions= np.dot(theta.transpose(),x)
-  return predictions[0]
-  
- predict1=predict(np.array([1,3.5]),theta)*10000
-print("For population = 35,000, we predict a profit of $"+str(round(predict1,0)))
-
-predict2=predict(np.array([1,7]),theta)*10000
-print("For population = 70,000, we predict a profit of $"+str(round(predict2,0)))
-
+mse=mean_squared_error(Y_test,Y_pred)
+print('MSE= ',mse)
+mae=mean_absolute_error(Y_test,Y_pred)
+print("MAE= ",mae)
+rmse=np.sqrt(mse)
+print("RMSE= ",rmse)
 ```
 
 ## Output:
 
 
-### PROFIT PREDICTION
-![output](ml%201.png)
+### df.head()
+![output](mll%201.png)
 
-### COST FUNCTION
-![output](ml%202.png)
+### df.tail()
+![output](mll%202.png)
 
-### GRADIENT DESCENT
-![output](ml%203.png)
+### X
+![output](mll%203.png)
 
-### COST FUNCTION USING GRADIENT DESCENT
-![output](ml%204.png)
+### Y
+![output](mll%204.png)
 
-### GRAPH WITH BEST FIT LINE (PROFIT PREDICTION)
-![output](ml%205.png)
+### PREDICTED Y VALUES
+![output](mll%205.png)
 
-### PROFIT PREDICTION FOR A POPULATION OF 35,000
-![output](ml%206.png)
+### ACTUAL Y VALUES
+![output](mll%206.png)
 
-### PROFIT PREDICTION FOR A POPULATION OF 70,000
-![output](ml%208.png)
+### GRAPH FOR TRAINING DATA
+![output](mll%207.png)
+
+### GRAPH FOR TEST DATA
+![output](mll%208.png)
+
+### MEAN SQUARE ERROR, MEAN ABSOLUTE ERROR AND RMSE
+![output](mll%209.png)
 
 
 
